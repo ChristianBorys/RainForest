@@ -1,6 +1,11 @@
 class ProductsController < ApplicationController
   def index
   	@products = Product.all 
+
+  	respond_to do |format|
+  		format.html # index.html.erb
+  		format.json { render json: @products }
+  	end
   end
 
   def show
@@ -12,8 +17,18 @@ class ProductsController < ApplicationController
   end
 
   def edit
-  	@product = Product.new(params[:product])
+  	@product = Product.new(product_params)
   
+  	if @product.save
+  		redirect_to products_url
+  	else
+  		render :new
+  	end
+  end
+
+  def create 
+  	@product = Product.new(product_params)
+
   	if @product.save
   		redirect_to products_url
   	else
@@ -24,7 +39,7 @@ class ProductsController < ApplicationController
   def update
   	@product = Product.find(params[:id])
 
-  	if @product.update_attributes(params[:product])
+  	if @product.update_attributes(product_params)
   		redirect_to product_path(@product)
   	else
   		render :edit
@@ -36,5 +51,9 @@ class ProductsController < ApplicationController
   	@product.destroy
   	redirect_to product_path
   end
+
+  def product_params
+  	params.require(:product).permit(:name, :description, :price_in_cents)
+  end	
 
 end
