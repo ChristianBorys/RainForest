@@ -60,7 +60,7 @@ class ProductsController < ApplicationController
   	@product = Product.find(params[:id])
 
   	respond_to do |format|
-      if @product.update_attributes(params[:product])
+      if @product.update_attributes(product_params)
         format.html { redirect_to @product, notice: 'Product was successfully updated.' }
         format.json { head :no_content }
       else
@@ -82,7 +82,8 @@ class ProductsController < ApplicationController
 	end
   end
 
-  def product_params
+  private
+  def product_params	
   	params.require(:product).permit(:name, :description, :price_in_cents)
   end	
 
