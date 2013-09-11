@@ -7,8 +7,17 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<%= debug params %>
-<%= yield %>
 
-</body>
+
+	<% if flash[:notice] %>
+		<p id="notice"><%= flash[:notice] %></p>
+	<% end %>
+	<% if flash[:alert] %>
+		<p id="alert"><%= flash[:flash] %></p>
+	<% end %>
+
+	<%= yield %>
+
+</body>	
+
 </html>
